@@ -7,7 +7,7 @@ from django.template.defaultfilters import slugify
 from .models import Post
 from .forms import PostForm
 from taggit.models import Tag
-
+from django.views.generic import DetailView
 
 def home_view(request):
     posts = Post.objects.all()
@@ -43,3 +43,18 @@ def tagged(request, slug):
         'posts':posts,
     }
     return render(request, 'home.html', context)
+
+
+
+class TagDetailView(DetailView):
+    model = Tag
+    template_name = "detail.html"
+    context_object_name='tags'
+    def get_context_data(self, **kwargs):
+        slug=self.kwargs['slug']
+        tag = get_object_or_404(Tag, slug=slug)
+        context = super().get_context_data(**kwargs)
+        context["posts"] = Post.objects.filter(tags=tag)
+
+        return context
+    

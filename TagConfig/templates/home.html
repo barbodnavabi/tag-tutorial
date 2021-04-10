@@ -19,8 +19,8 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <p>Common Tags: 
-            {% for mt in common_tags %}
-                <a href="#" class="badge badge-success">{{mt}}</a>
+            {% for tag in tags.all %}
+                <a href="{% url 'tagged' tag.slug %}" class="badge badge-success">{{tag}}</a>
             {% endfor %}
             </p>
             <div class="row mb-2 posts">
